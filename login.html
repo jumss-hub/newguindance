@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Student Web Guidance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            transition: opacity 1s ease-in-out;
+        }
+       
+        header {
+            background: linear-gradient(90deg, #4a76a8, #d5e0e6);
+            color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .login-form {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .login-form h2 {
+            color: #4a76a8;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+        .login-form select,
+        .login-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #d148ca;
+            border-radius: 10px;
+        }
+        .login-form input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 15px;
+            background-color: #4a76a8;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        .login-form button:hover {
+            background-color: #285177;
+        }
+        .login-form .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .login-form .checkbox-label {
+            font-size: 16px;
+            color: #333;
+        }
+        .login-form .checkbox-effect {
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+        .login-form .checkbox-effect input[type="checkbox"]:checked + .checkbox-label::before {
+            content: "✓";
+            color: #4a76a8;
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .back-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Student Web Guidance</h1>
+    </header>
+
+    <div class="container">
+        <div class="login-form">
+            <h2>Login</h2>
+            <form action="swg.php" method="post">
+                <label for="alias">Choose Alias:</label>
+                <select id="alias" name="alias">
+                    <option value="student1">Student1</option>
+                    <option value="student2">Student2</option>
+                    <option value="student3">Student3</option>
+                </select>
+                <label for="studentId">Student ID Number:</label>
+                <input type="text" id="studentId" name="studentId" placeholder="Enter your Student ID" required>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="rememberMe" name="rememberMe" class="checkbox-effect">
+                    <label for="rememberMe" class="checkbox-label">Remember Me</label>
+                </div>
+                
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        
+        <a href="support.html" class="back-btn">Back</a>
+    </div>
+</body>
+</html>

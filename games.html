@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soothing Mini-Games</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-image: url(image\ copy\ 5.png);
+            color: #333; 
+            min-height: 100vh; 
+            padding-bottom: 150px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-repeat:no-repeat;
+            background-size: cover;
+        }
+        header {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(90deg, #4a76a8, #e6f7ff);
+            color: white;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 { 
+            font-size: 5vw; 
+            margin: 0; 
+        }
+        h2 { 
+            text-align: center; 
+            font-size: 4vw; 
+        }
+        .game-container { 
+            display: flex; 
+            justify-content: space-around; 
+            flex-wrap: wrap; 
+            padding: 20px; 
+            margin-bottom: 40px; 
+            max-width: 1200px; 
+            width: 100%; 
+        }
+        .game { 
+            border: 2px solid #4a76a8; 
+            border-radius: 8px; 
+            padding: 10px; 
+            margin: 10px; 
+            width: 200px; 
+            text-align: center; 
+            background-color: #e6f7ff; 
+            flex: 1 1 200px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #colorCanvas, #sandboxCanvas, #fruitCanvas { 
+            border: 1px solid #4a76a8; 
+            margin-top: 10px; 
+            cursor: pointer; 
+            width: 100%; 
+            max-width: 200px; 
+            height: auto; 
+        }
+        .color-picker-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .back-button { 
+            display: block; 
+            margin: 20px auto; 
+            padding: 10px 20px; 
+            background-color: #4a76a8; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            text-align: center; 
+            font-size: 16px; 
+        }
+        .back-button:hover { 
+            background-color: #3a5b8a; 
+        }
+
+        @media (max-width: 600px) {
+            h1, h2 { 
+                font-size: 6vw; 
+            }
+            .game { 
+                width: 90%; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Space for Relaxation and Joy!</h1>
+</header>
+
+<a href="support.html" class="back-button">Back</a>
+
+<div class="game-container">
+    <div class="game">
+        <h2>Zen Garden Creator</h2>
+        <p>Water your plant to help it grow.</p>
+        <button id="waterButton">Water Plant</button>
+        <div id="garden" style="margin-top: 10px;"></div>
+    </div>
+
+    <div class="game">
+        <h2>Color by Nature</h2>
+        <p>Relax with a digital coloring book.</p>
+        <canvas id="colorCanvas" width="200" height="200"></canvas>
+        <div>
+           
+            <input type="color" id="colorPicker" value="#000000" />
+        </div>
+    </div>
+
+    <div class="game">
+        <h2>Calm Puzzles</h2>
+        <p>Solve easy puzzles.</p>
+        <div id="puzzleContainer">
+            <p id="puzzleQuestion"></p>
+            <button onclick="startPuzzle()">Start Puzzle</button>
+            <div id="puzzle" style="display:none;">
+                <input type="text" id="puzzleInput" placeholder="Your answer...">
+                <button onclick="checkPuzzle()">Check</button>
+                <p id="puzzleResult"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="game">
+        <h2>Sandbox</h2>
+        <p>Draw freely in the sandbox.</p>
+        <canvas id="sandboxCanvas" width="200" height="200" onmousedown="startDrawing(event)" onmouseup="stopDrawing()" onmousemove="draw(event)"></canvas>
+        <div class="color-picker-container">
+            <input type="color" id="sandboxColorPicker" value="#FFFF00" />
+            <button onclick="clearSandbox()">Clear Sandbox</button>
+        </div>
+    </div>
+
+    <div class="game">
+        <h2>Fruit Cutting</h2>
+        <p>Cut the fruits as they appear!</p>
+        <canvas id="fruitCanvas" width="200" height="200" onclick="cutFruit(event)"></canvas>
+        <button onclick="startFruitGame()">Start Cutting</button>
+        <p id="fruitScore">Score: 0</p>
+    </div>
+
+    <div class="game">
+        <h2>Soothing Sounds Scape</h2>
+        <div class="audio-controls">
+            <input type="file" id="audioFile" accept="audio/*" />
+            <button onclick="loadSound()">Load Sound</button>
+            <button onclick="playSound()">Play Sound</button>
+            <button onclick="stopSound()">Stop Sound</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let plantSize = 1;
+    const maxSize = 5; 
+    let growing = false;
+
+    const quotes = [
+        "Bloom where you are planted.",
+        "The greatest gift of the garden is the restoration of the five senses.",
+        "To plant a garden is to believe in tomorrow.",
+        "Gardening adds years to your life and life to your years.",
+        "In every gardener there is a child who believes in The Seed Fairy."
+    ];
+
+    document.getElementById('waterButton').addEventListener('click', waterPlant);
+
+    function waterPlant() {
+        const now = new Date();
+        const lastWatered = localStorage.getItem('lastWatered');
+        
+        if (lastWatered) {
+            const lastWateredDate = new Date(lastWatered);
+            const timeDiff = now - lastWateredDate;
+
+            if (timeDiff < 24 * 60 * 60 * 1000) {
+                alert("You can only water your plant every 24 hours, come back tomorrow!");
+                return;
+            }
+        }
+
+        if (growing || plantSize >= maxSize) return;
+        growing = true;
+        const garden = document.getElementById('garden');
+        
+        const plant = document.createElement('span');
+        plant.textContent = '🌱';
+        plant.classList.add('plant');
+        plant.style.transform = `scale(${plantSize})`;
+        garden.innerHTML = ''; 
+        garden.appendChild(plant);
+        
+        const growInterval = setInterval(() => {
+            if (plantSize < maxSize) {
+                plantSize += 0.1; 
+                plant.style.transform = `scale(${plantSize.toFixed(1)})`;
+            } else {
+                clearInterval(growInterval);
+                growing = false;
+                plant.textContent = '🌳'; 
+                plant.style.cursor = 'pointer';
+                plant.onclick = () => {
+                    removePlant();
+                };
+                
+                displayFruitWithQuote(garden);
+                localStorage.setItem('lastWatered', now.toISOString());
+            }
+        }, 500);
+    }
+
+    function displayFruitWithQuote(garden) {
+        const fruit = document.createElement('div');
+        fruit.innerHTML = '🍎 <br><strong>Quote:</strong> ' + quotes[Math.floor(Math.random() * quotes.length)];
+        fruit.style.fontSize = '30px';
+        garden.appendChild(fruit);
+    }
+
+    function removePlant() {
+        const garden = document.getElementById('garden');
+        garden.innerHTML = ''; 
+        plantSize = 1; 
+    }
+
+    let currentColor = '#000000'; 
+    const canvas = document.getElementById('colorCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+   
+    document.getElementById('colorPicker').addEventListener('input', (event) => {
+        currentColor = event.target.value;
+    });
+
+
+    canvas.addEventListener('mousedown', (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+
+ 
+    canvas.addEventListener('mouseup', () => {
+        isDrawing = false;
+    });
+
+  
+    canvas.addEventListener('mousemove', (e) => {
+        if (!isDrawing) return;
+        
+        const currentX = e.offsetX;
+        const currentY = e.offsetY;
+        
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(currentX, currentY);
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        
+        [lastX, lastY] = [currentX, currentY];
+    });
+
+   
+    const questions = [
+        { question: "What color is the sun?", answer: "yellow" },
+        { question: "What do bees make?", answer: "honey" },
+        { question: "What is the capital of France?", answer: "paris" },
+        { question: "How many legs does a spider have?", answer: "eight" },
+        { question: "What is the largest planet?", answer: "jupiter" },
+        { question: "What do you call a baby cat?", answer: "kitten" },
+        { question: "What is the opposite of cold?", answer: "hot" },
+        { question: "How many colors are in a rainbow?", answer: "seven" },
+        { question: "What fruit is yellow and curved?", answer: "banana" },
+        { question: "What do you use to write on a chalkboard?", answer: "chalk" },
+        { question: "What is the tallest animal?", answer: "giraffe" }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function startPuzzle() {
+        currentQuestionIndex = Math.floor(Math.random() * questions.length);
+        const question = questions[currentQuestionIndex];
+        document.getElementById('puzzleQuestion').textContent = question.question;
+        document.getElementById('puzzle').style.display = 'block';
+    }
+
+    function checkPuzzle() {
+        const userAnswer = document.getElementById('puzzleInput').value.toLowerCase();
+        const correctAnswer = questions[currentQuestionIndex].answer;
+
+        const result = userAnswer === correctAnswer ? "Correct!" : "Wrong! The answer was: " + correctAnswer;
+        document.getElementById('puzzleResult').textContent = result;
+    }
+
+   
+    let fruitScore = 0;
+    let fruitInterval;
+    let currentFruit = null;
+    const fruits = ['🍎', '🍌', '🍇', '🍉', '🍊', '🍍'];
+
+    function startFruitGame() {
+        fruitScore = 0;
+        document.getElementById('fruitScore').innerText = `Score: ${fruitScore}`;
+        clearInterval(fruitInterval);
+        spawnFruit();
+    }
+
+    function spawnFruit() {
+        const canvas = document.getElementById('fruitCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const randomFruit = fruits[Math.floor(Math.random() * fruits.length)];
+        const x = Math.random() * (canvas.width - 40) + 20;
+        const y = Math.random() * (canvas.height - 40) + 20;
+
+        currentFruit = {
+            character: randomFruit,
+            x: x,
+            y: y,
+            width: 30,
+            height: 30
+        };
+
+        ctx.font = '30px Arial';
+        ctx.fillText(randomFruit, x, y);
+
+        fruitInterval = setTimeout(spawnFruit, 4000);
+    }
+
+    function cutFruit(event) {
+        const canvas = document.getElementById('fruitCanvas');
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        if (currentFruit && x >= currentFruit.x && x <= currentFruit.x + currentFruit.width &&
+            y >= currentFruit.y - 30 && y <= currentFruit.y) { 
+            fruitScore++;
+            document.getElementById('fruitScore').innerText = `Score: ${fruitScore}`;
+
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            spawnFruit();
+        }
+    }
+    
+    let audio = new Audio();
+
+    function loadSound() {
+        const fileInput = document.getElementById('audioFile');
+        const file = fileInput.files[0];
+
+        if (file) {
+            const url = URL.createObjectURL(file);
+            audio.src = url;
+        } else {
+            alert("Please select a sound file first.");
+        }
+    }
+
+    function playSound() {
+        if (audio.src) {
+            audio.play();
+        } else {
+            alert("Please load a sound file first.");
+        }
+    }
+
+    function stopSound() {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+
+   
+    const sandboxCanvas = document.getElementById('sandboxCanvas');
+    const ctxSandbox = sandboxCanvas.getContext('2d');
+    const sandParticles = [];
+    const sandSize = 3;
+    const gravity = 0.1;
+    const groundLevel = sandboxCanvas.height - sandSize;
+    
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.vx = Math.random() * 0.2 - 0.1;
+            this.vy = Math.random() * 0.3 + 0.5;
+            this.falling = true;
+            this.color = color;
+        }
+
+        update() {
+            if (this.falling) {
+                this.vy += gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.y >= groundLevel) {
+                    this.y = groundLevel;
+                    this.vy = 0;
+                    this.falling = false;
+                }
+            }
+        }
+
+        draw() {
+            ctxSandbox.fillStyle = this.color;
+            ctxSandbox.fillRect(this.x, this.y, sandSize, sandSize);
+        }
+    }
+
+    function createSand(x, y) {
+        for (let i = 0; i < 5; i++) {
+            sandParticles.push(new Particle(x + Math.random() * 5 - 2.5, y + Math.random() * 5 - 2.5, currentColor));
+        }
+    }
+
+    function clearSandbox() {
+        sandParticles.length = 0;
+        ctxSandbox.clearRect(0, 0, sandboxCanvas.width, sandboxCanvas.height);
+    }
+
+    let isDrawingSandbox = false;
+
+    function startDrawing(event) {
+        isDrawingSandbox = true;
+        createSand(event.offsetX, event.offsetY);
+    }
+
+    function stopDrawing() {
+        isDrawingSandbox = false;
+    }
+
+    function draw(event) {
+        if (!isDrawingSandbox) return;
+        createSand(event.offsetX, event.offsetY);
+    }
+
+    document.getElementById('sandboxColorPicker').addEventListener('input', (event) => {
+        currentColor = event.target.value;
+    });
+
+    function animateSandbox() {
+        ctxSandbox.clearRect(0, 0, sandboxCanvas.width, sandboxCanvas.height);
+        sandParticles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        requestAnimationFrame(animateSandbox);
+    }
+
+    animateSandbox(); 
+</script>
+
+
+</body>
+</html>

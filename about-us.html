@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Student Web Guidance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        body.loaded {
+            opacity: 1;
+        }
+
+    
+        header {
+            background: linear-gradient(135deg, #aabcd1, #285177);
+            color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+      
+        .back-btn {
+            display: block;
+            width: 100px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4a76a8;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #285177;
+        }
+
+       
+        .container {
+            width: 90%;
+            margin: 20px auto;
+        }
+
+       
+        .about-section {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-image: url(img6.jpg);
+            background-position: left;
+            background-size: cover;
+        }
+        .about-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .about-section h2 {
+            color:white;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .about-section p {
+            font-size: 20px;
+            line-height: 1.6;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+     
+        .modal {
+            display: flex;
+            position: fixed;
+            z-index: 100;
+            right: 20px;
+            bottom: 20px;
+            width: 300px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: #fff;
+        }
+        .modal-content {
+            text-align: center;
+            font-size: 16px;
+        }
+        .close-btn {
+            background-color: #f44336;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .close-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About Us</h1>
+    </header>
+
+   
+    <a href="support.html" class="back-btn">Back</a>
+
+    <div class="container">
+        <div class="about-section">
+            <h2>Our Mission</h2>
+            <p>
+                At Student Web Guidance, we are committed to providing students with the support they need to succeed academically and personally. 
+                Our platform offers personalized advice, academic resources, and a safe space for students to share their challenges.
+            </p>
+            <p>
+                We understand that each student is unique, which is why we provide tailored guidance to help navigate the ups and downs of academic life.
+                Our mission is to empower students, offering tools and resources to build resilience and achieve their goals. We proudly serve students of Tanauan Institute.
+            </p>
+            <h2>Our Vision</h2>
+            <p>
+                We envision a future where every student feels confident and supported throughout their academic journey, fostering personal growth and academic success.
+            </p>
+        </div>
+    </div>
+
+  
+    <div id="quoteModal" class="modal">
+        <div class="modal-content">
+            <p id="quoteText">"Education is the most powerful weapon which you can use to change the world."</p>
+            <p id="quoteAuthor">- Nelson Mandela</p>
+            <div class="close-btn" id="closeBtn">Close</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+
+            const quotes = [
+                { text: '"Education is the most powerful weapon which you can use to change the world."', author: '- Nelson Mandela' },
+                { text: '"The only limit to our realization of tomorrow is our doubts of today."', author: '- Franklin D. Roosevelt' },
+                { text: '"The best way to predict the future is to create it."', author: '- Peter Drucker' },
+                { text: '"Success is not the key to happiness. Happiness is the key to success."', author: '- Albert Schweitzer' },
+                { text: '"Education is the passport to the future, for tomorrow belongs to those who prepare for it today."', author: '- Malcolm X' },
+                { text: '"The beautiful thing about learning is that no one can take it away from you."', author: '- B.B. King' },
+                { text: '"It always seems impossible until it is done."', author: '- Nelson Mandela' },
+                { text: '"Learning never exhausts the mind."', author: '- Leonardo da Vinci' },
+                { text: '"Change is the end result of all true learning."', author: '- Leo Buscaglia' },
+                { text: '"Success is not in what you have, but who you are."', author: '- Bo Bennett' }
+            ];
+
+            let currentQuoteIndex = 0;
+            const quoteModal = document.getElementById('quoteModal');
+            const closeBtn = document.getElementById('closeBtn');
+            const quoteText = document.getElementById('quoteText');
+            const quoteAuthor = document.getElementById('quoteAuthor');
+
+            function showNextQuote() {
+                const quote = quotes[currentQuoteIndex];
+                quoteText.textContent = quote.text;
+                quoteAuthor.textContent = quote.author;
+
+                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+
+                
+                quoteModal.style.opacity = '1';
+            }
+
+            
+            setTimeout(showNextQuote, 2000);
+            closeBtn.addEventListener('click', () => {
+                quoteModal.style.opacity = '0';
+                setTimeout(showNextQuote, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

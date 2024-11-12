@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Web Guidance</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eaf6f7;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-image: url('img1.png'); 
+      background-size: cover; 
+      background-position: center; 
+      height: 150px; 
+      color: rgb(228, 234, 240);
+      text-align: center;
+      padding-top: 30px;
+      border-radius: 10px;
+      
+      
+    }
+
+    header h1 {
+      font-size: 8vw;
+      max-height: 3rem; 
+    }
+
+    nav {
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 5px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 2;
+    }
+
+    nav a {
+      color: #4a76a8;
+      margin: 5px;
+      text-decoration: none;
+      font-size: 3vw; 
+      padding: 4px 8px; 
+      border-radius: 5px;
+      transition: background-color 0.3s ease, border 0.3s ease; 
+      border: 2px solid; 
+      position: relative; 
+    }
+
+  
+
+    nav a:hover {
+      background-color: rgba(74, 118, 168, 0.5);
+      border-color: #4a76a8; 
+    }
+
+    nav a:hover::before {
+      opacity: 1;
+    }
+
+    .container {
+      flex: 1;
+      padding: 5vw; 
+      max-width: 1200px;
+      margin: 0 auto;
+      color: #4a76a8;
+      padding-bottom: 100px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 4vw; 
+    }
+
+    .intro p {
+      font-size: 3vw;
+      color: #583838;
+    }
+
+    .faq-section {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+      background-repeat: no-repeat;
+    }
+
+    .faq-item {
+      position: relative;
+      background-color: #fff;
+      width: calc(25% - 10px); 
+      padding: 2vw; 
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+     
+    }
+
+    .faq-item h4 {
+      margin: 0;
+      color: #fff;
+      font-size: 3vw;
+      z-index: 1;
+      position: relative;
+    }
+
+    .faq-item .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    .faq-item .faq-answer {
+      max-height: 0;
+      opacity: 0;
+      font-size: 2.5vw;
+      margin-top: 10px;
+      color: white;
+      overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.5s ease;
+      position: relative;
+      z-index: 1;
+      
+      
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      opacity: 1;
+      height: auto;
+    }
+
+    .faq-item.active {
+      background-color: #4a76a8;
+    }
+
+    @media (max-width: 768px) {
+      .faq-item {
+        width: calc(50% - 10px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .faq-item {
+        width: 100%;
+      }
+      nav a {
+        font-size: 3.5vw; 
+        padding: 3px 5px;
+      }
+    }
+
+    footer {
+      background-color: #4a76a8;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: auto;
+      width: 100%;
+      font-size: 2.5vw; 
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Student-Web Guidance</h1>
+  </header>
+
+  <nav>
+    <a href="login.html">Home</a>
+    <a href="about-us.html">About Us</a>
+    <a href="games.html">Play Games</a>
+    <a href="messages.html">View Other Messages</a>
+    <a href="guidance-officer.html">Guidance Officers</a>
+  </nav>
+
+  <div class="container">
+    <section class="intro">
+      <h2>Welcome to the Student-Web Guidance!</h2>
+      <p>Here are some frequently asked questions to help guide you through your academic struggles.</p>
+    </section>
+
+    <section class="faq-section">
+      <div class="faq-item" style="background-image: url('image.png');" onclick="toggleFAQ(this)">
+        <div class="overlay"></div>
+        <h4>What is academic stress?</h4>
+        <div class="faq-answer">
+          <p>Academic stress refers to the emotional strain caused by workload, exams, or deadlines.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" style="background-image: url('img2.png');" onclick="toggleFAQ(this)">
+        <div class="overlay"></div>
+        <h4>How to manage exam stress?</h4>
+        <div class="faq-answer">
+          <p>Stay organized, take regular breaks, practice relaxation, and sleep well.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" style="background-image: url('image\ copy\ 3.png');" onclick="toggleFAQ(this)">
+        <div class="overlay"></div>
+        <h4>Tips for balancing life?</h4>
+        <div class="faq-answer">
+          <p>Plan your schedule, prioritize tasks, and make time for relaxation and friends.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" style="background-image: url('image\ copy\ 2.png');" onclick="toggleFAQ(this)">
+        <div class="overlay"></div>
+        <h4>Where to seek help?</h4>
+        <div class="faq-answer">
+          <p>Reach out to guidance officers, school counselors, or a trusted support network.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Student Guidance Exchange</p>
+  </footer>
+
+  <script>
+    function toggleFAQ(selectedItem) {
+      const items = document.querySelectorAll('.faq-item');
+      items.forEach(item => {
+        if (item !== selectedItem) {
+          item.classList.remove('active'); 
+        }
+      });
+      selectedItem.classList.toggle('active'); 
+    }
+  </script>
+
+</body>
+</html>

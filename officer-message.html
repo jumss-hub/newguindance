@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guidance Officer Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #4a76a8;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    .message-card {
+      background-color: #f8f8f8;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .message-card h3 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+    .message-card p {
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    .message-card .status {
+      font-size: 0.9em;
+      color: #4a76a8;
+    }
+    .message-card .actions {
+      margin-top: 15px;
+    }
+    .message-card .actions button {
+      background-color: #4a76a8;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .message-card .actions button:hover {
+      background-color: #3b5d75;
+    }
+    .reply-section {
+      margin-top: 20px;
+    }
+    .reply-section textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    .reply-section button {
+      background-color: #4a76a8;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .reply-section button:hover {
+      background-color: #3b5d75;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Guidance Officer Panel</h1>
+  </header>
+
+  <div class="container">
+
+  
+    <div class="messages-section">
+      <h2>Messages from Students</h2>
+
+      <div class="message-card" id="message1">
+        <h3>Student: John Doe</h3>
+        <p><strong>Message:</strong> "I'm struggling with time management and balancing my studies."</p>
+        <p class="status"><strong>Status:</strong> Unread</p>
+        <div class="actions">
+          <button onclick="markAsRead('message1')">Mark as Read</button>
+          <button onclick="closeMessage('message1')">Close</button>
+        </div>
+        <div class="reply-section" id="reply-section-message1" style="display:none;">
+          <textarea placeholder="Write your reply..."></textarea>
+          <button onclick="sendReply('message1')">Send Reply</button>
+        </div>
+      </div>
+
+      <div class="message-card" id="message2">
+        <h3>Student: Jane Smith</h3>
+        <p><strong>Message:</strong> "How can I improve my grades before the finals?"</p>
+        <p class="status"><strong>Status:</strong> Unread</p>
+        <div class="actions">
+          <button onclick="markAsRead('message2')">Mark as Read</button>
+          <button onclick="closeMessage('message2')">Close</button>
+        </div>
+        <div class="reply-section" id="reply-section-message2" style="display:none;">
+          <textarea placeholder="Write your reply..."></textarea>
+          <button onclick="sendReply('message2')">Send Reply</button>
+        </div>
+      </div>
+
+    
+
+    </div>
+
+  </div>
+
+  <script>
+
+    function markAsRead(messageId) {
+      const messageCard = document.getElementById(messageId);
+      const status = messageCard.querySelector('.status');
+      status.innerHTML = '<strong>Status:</strong> Read';
+      status.style.color = 'green';
+
+    
+      const replySection = document.getElementById('reply-section-' + messageId);
+      replySection.style.display = 'block';
+    }
+
+    function closeMessage(messageId) {
+      const messageCard = document.getElementById(messageId);
+      messageCard.style.display = 'none';
+    }
+
+
+    function sendReply(messageId) {
+      const replyTextarea = document.getElementById('reply-section-' + messageId).querySelector('textarea');
+      const replyText = replyTextarea.value.trim();
+
+      if (replyText) {
+        alert('Reply sent: ' + replyText);
+        replyTextarea.value = '';
+      } else {
+        alert('Please write a reply before sending.');
+      }
+    }
+  </script>
+
+</body>
+</html>

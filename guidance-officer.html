@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidance Officers - Student Web Guidance</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            transition: opacity 1s ease-in-out;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4a76a8, #285177);
+            color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .officer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+        }
+
+        .officer-column {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .officer-column:hover {
+            transform: scale(1.05);
+        }
+
+        .officer-column img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .officer-column h2 {
+            color: #4a76a8;
+            margin: 10px 0;
+        }
+
+        .officer-column p {
+            color: #333;
+        }
+
+        .officer-details {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            z-index: 20;
+            transition: opacity 0.3s ease;
+        }
+
+        .officer-details.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .officer-details.hide {
+            opacity: 0;
+            display: none;
+        }
+
+        .officer-details button {
+            background: transparent;
+            border: none;
+            color: #4a76a8;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .officer-details button:hover {
+            text-decoration: underline;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #d32f2f;
+        }
+
+       
+        .corner-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .corner-popup p {
+            margin: 0;
+            color: #000;
+        }
+
+        .corner-popup button {
+            background: transparent;
+            border: none;
+            color: #4a76a8;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .corner-popup button:hover {
+            text-decoration: underline;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            display: none;
+            transition: opacity 0.3s ease;
+            z-index: 10; 
+            border: 1px solid #4a76a8;
+        }
+
+        .popup.show {
+            display: block;
+        }
+
+        .popup button {
+            background: transparent;
+            border: none;
+            color: #4a76a8;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            text-decoration: underline;
+        }
+
+        .popup .close-btn {
+            background: transparent;
+            border: none;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .popup p {
+            color: #000000; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> Welcome to Student Web Guidance</h1>
+    </header>
+
+    <div class="corner-popup" id="assistancePopup">
+        <p>Are you really in need of assistance? Click this to <a href="appointment.html" style="color: #4a76a8;">talk to us</a>.</p>
+        <button onclick="closeCornerPopup()">x</button>
+    </div>
+
+    <div class="container">
+        <div class="officer-columns">
+
+            <div class="officer-column" onclick="showDetails('officer1-details')">
+                <img src="try.jpg" alt="officer 1">
+                <h2>Mekus D, jabol</h2>
+                <p>nanakit likod kakajabo-</p>
+            </div>
+
+            <div class="officer-column" onclick="showDetails('officer2-details')">
+                <img src="try1.jpg" alt="officer 2">
+                <h2>Lou P, et</h2>
+                <p>babaero</p>
+            </div>
+
+            <div class="officer-column" onclick="showDetails('officer3-details')">
+                <img src="try2..jpg" alt="officer 3">
+                <h2>Patrick star </h2>
+                <p>cutieepututoy</p>
+            </div>
+        </div>
+
+        <div id="officer1-details" class="officer-details">
+            <h2> Mekus D, jabol</h2>
+            <p>magaling mag jab-</p>
+            <button onclick="closeDetails()"> Close</button>
+        </div>
+
+        <div id="officer2-details" class="officer-details">
+            <h2> Lou P, et</h2>
+            <p> "Ang angas mo ah!"</p>
+            <button onclick="closeDetails()"> Close</button>
+        </div>
+
+        <div id="officer3-details" class="officer-details">
+            <h2>Patrick Star</h2>
+            <p> "Isasave ko ang mundo"</p>
+            <button onclick="closeDetails()"> Close</button>
+        </div>
+
+        <a href="support.html" class="back-btn"> Back to Main Page</a>
+    </div>
+
+    <script>
+        function showDetails(id) {
+            document.getElementById(id).classList.add('show');
+        }
+
+        function closeDetails() {
+            const details = document.querySelectorAll('.officer-details');
+            details.forEach(detail => detail.classList.remove('show'));
+        }
+
+        function closeCornerPopup() {
+            document.getElementById('assistancePopup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
